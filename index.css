@@ -1,0 +1,61 @@
+body {
+    background-color: grey;
+    margin: auto;
+}
+title {
+    margin: auto;
+    width: 100%;
+    text-align: center;
+}
+.logo {
+    margin: auto;
+    width: 100%;
+    text-align: left;
+}
+
+h2 {
+    color: wheat;
+}
+h3 {
+    color: wheat;
+}
+#gameBoard {
+    width: 80%;
+    margin-left: 5%;
+}
+#gameBoard table{
+    text-align: center;
+    border-collapse: collapse;
+    display: inline-block;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: 10%;
+    width:80%;
+}
+#gameBoard table td {
+    background-color: rgba(185, 186, 202, 0.322);
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    border: 1px solid darkblue;
+}
+#gameBoard table tr {
+    background-color: rgb(116, 74, 13);
+    height: 30px;
+    width: 30px;
+    min-height: 30px;
+    min-width: 30px;
+    border: 1px solid darkblue;
+    margin-left:10%;
+    margin-right: 10%;
+}
+
+#restartGameBUtton {
+    text-align: center;
+    color: black;
+    width: 100px;
+    height: 40px;
+    font-weight: bold;
+    border-radius: 20px;
+}
