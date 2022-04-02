@@ -20,6 +20,7 @@ var boardDisp;
 var boardAdj;
 
 document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("restartGameButton").style.display="none";
     startGame();
 });
 
@@ -61,6 +62,7 @@ function createTable() {
         for (let j = 0; j < components.num_col; j++) {
             td = document.createElement('td');
             td.id = cellId(i, j);
+            cellListener(td, i, j);
             row.appendChild(td);
             //add the event listeners to handle mouse click
         }
@@ -74,6 +76,7 @@ function createTable() {
 function cellId(i, j) {
     return i + '-' + j;
 }
+
 
 /*
 Placing them randomly has problems when large percentages of the board are bombs
@@ -100,6 +103,42 @@ function printBoard() {
             console.log(board);
         }
     }
+}
+function  reload() {
+    window.location.reload();
+}
+function gameOver() {
+    document.getElementById("onGameFinish").style.display="block";
+    document.getElementById("restartGameButton").style.display="block";
+}
+function toggleCellClick(y, x) {
+    if (x < 0 || y < 0)
+        return;
+    if (y >= components.num_rows || x >= components.num_col)
+        return ;
+    if (board[y][x] == 2)
+        return;
+    board[y][x] = 2;
+    if(boardAdj[y][x] == 0) {
+        toggleCellClick(y-1, x-1);
+        toggleCellClick(y-1, x);
+        toggleCellClick(y-1, x+1);
+        toggleCellClick(y, x-1);
+        toggleCellClick(y, x+1);
+        toggleCellClick(y+1, x-1);
+        toggleCellClick(y+1, x);
+        toggleCellClick(y+1, x+1);
+    }
+}
+function cellListener(td, y, x) {
+    td.addEventListener("mousedown", function(event) {
+        if (board[y][x] == 1)
+            gameOver();
+        else {
+            toggleCellClick(y, x);
+        }
+        updateBoard();
+    })
 }
 function updateBoard() {
     for (y = 0; y < components.num_rows; y++) {
