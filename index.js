@@ -3,16 +3,19 @@ var components = {
     num_col : 20,
     num_bombs : 40,
     bomb: '💣',
+    flag: '🚩',
     alive: true,
     colors : {1: 'blue', 2: 'green', 3: 'red', 4: 'purple', 5: 'turquoise', 6: 'brown', 7: 'pink', 8: 'grey'},
-    firstClick : true
+    firstClick : true,
+    clickMode : 1 // 1 for left mouse down 3 for right mouse down
 }
+
 /*
-0 for empty
 1 for bomb present
 2 for display / clicked / show adjacent bomb count
 if i want to do marking
-3 for marked w/ bomb
+3 for marked w/o bomb
+4 for marked with bomb
 
 going to use a seperate array for handling the how many bombs are near
 */
@@ -117,7 +120,7 @@ function toggleCellClick(y, x) {
         return;
     if (y >= components.num_rows || x >= components.num_col)
         return ;
-    if (board[y][x] == 2)
+    if (board[y][x] == 2 || board[y][x] == 3 || board[y][x] == 4)
         return;
     board[y][x] = 2;
     if(boardAdj[y][x] == 0) {
@@ -133,19 +136,38 @@ function toggleCellClick(y, x) {
 }
 function cellListener(td, y, x) {
     td.addEventListener("mousedown", function(event) {
-        if (components.firstClick == true) {
-            if (board[y][x] == 1) {
+        if (event.which == 1 && event.shiftKey) {
+            //console.log("shift mouse down"); 
+            if (board[y][x] == 0)
+                board[y][x] = 3;
+            else if (board[y][x] == 1)
+                board[y][x] = 4;
+            else if (board[y][x] == 3)
                 board[y][x] = 0;
-                countAdjacentBombs();
+            else if (board[y][x] == 4)
+                board[y][x] = 1;
+            updateBoard();
+        }
+        else if (event.which == 1) {
+            if (components.firstClick == true) {
+                if (board[y][x] == 1) {
+                    board[y][x] = 0;
+                    countAdjacentBombs();
+                }
+                components.firstClick = false;
             }
-            components.firstClick = false;
+            if (board[y][x] == 1) {
+                updateBoardDebug();
+                gameOver();
+            }
+            else {
+                toggleCellClick(y, x);
+                updateBoard();
+            }
         }
-        if (board[y][x] == 1)
-            gameOver();
-        else {
-            toggleCellClick(y, x);
+        if (event.which == 3) {
+            console.log("event.which == 3");
         }
-        updateBoard();
     })
 }
 function updateBoard() {
@@ -178,6 +200,19 @@ function updateBoard() {
                             tmp.innerHTML = boardAdj[y][x];
                         else   
                             tmp.innerHTML = "";
+                        break;
+                    }
+                    case 3: {
+                        tmp.style.color = "black";
+                        tmp.style.backgroundColor = "white";
+                        tmp.textContent = components.flag;
+                        break;
+                    }
+                    case 4 : {
+                        tmp.style.color = "black";
+                        tmp.style.backgroundColor = "white";
+                        tmp.textContent = components.flag;
+                        break;
                     }
                     default: {
                         break;
@@ -194,14 +229,30 @@ function updateBoardDebug() {
             if (tmp) {
                 switch (board[y][x]) {
                     case 0: {
-                        tmp.style.color = "brown";
-                        tmp.style.backgroundColor = "brown";
+                        tmp.style.color = "white";
+                        tmp.style.backgroundColor = "white";
                         tmp.innerHTML = "";
+                        tmp.textContent = "";
                         break;
                     }
                     case 1: {
                         tmp.style.color= 'red';
                         tmp.style.backgroundColor = "red";
+                        tmp.innerHTML = "";
+                        tmp.textContent = components.bomb;
+                        break;
+                    }
+                    case 3: {
+                        tmp.style.color = "white";
+                        tmp.style.backgroundColor = "white";
+                        tmp.innerHTML = "";
+                        tmp.textContent = "";
+                        break;
+                    }
+                    case 4: {
+                        tmp.style.color= 'red';
+                        tmp.style.backgroundColor = "red";
+                        tmp.innerHTML = "";
                         tmp.textContent = components.bomb;
                         break;
                     }
