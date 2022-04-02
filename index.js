@@ -4,7 +4,8 @@ var components = {
     num_bombs : 40,
     bomb: '💣',
     alive: true,
-    colors : {1: 'blue', 2: 'green', 3: 'red', 4: 'purple', 5: 'turquoise', 6: 'brown', 7: 'pink', 8: 'grey'}
+    colors : {1: 'blue', 2: 'green', 3: 'red', 4: 'purple', 5: 'turquoise', 6: 'brown', 7: 'pink', 8: 'grey'},
+    firstClick : true
 }
 /*
 0 for empty
@@ -132,6 +133,13 @@ function toggleCellClick(y, x) {
 }
 function cellListener(td, y, x) {
     td.addEventListener("mousedown", function(event) {
+        if (components.firstClick == true) {
+            if (board[y][x] == 1) {
+                board[y][x] = 0;
+                countAdjacentBombs();
+            }
+            components.firstClick = false;
+        }
         if (board[y][x] == 1)
             gameOver();
         else {
@@ -153,6 +161,9 @@ function updateBoard() {
                         break;
                     }
                     case 1: {
+                        tmp.style.color = "brown";
+                        tmp.style.backgroundColor = "brown";
+                        tmp.innerHTML = "";
                         /*
                         tmp.style.color= 'red';
                         tmp.style.backgroundColor = "red";

@@ -33,7 +33,8 @@ h3 {
     width:80%;
 }
 #gameBoard table td {
-    background-color: rgba(185, 186, 202, 0.322);
+    /*background-color: rgba(185, 186, 202, 0.322); */
+    background-color: brown;
     width: 30px;
     height: 30px;
     min-width: 30px;
@@ -41,7 +42,7 @@ h3 {
     border: 1px solid darkblue;
 }
 #gameBoard table tr {
-    background-color: rgb(116, 74, 13);
+    /*background-color: rgb(116, 74, 13);*/
     height: 30px;
     width: 30px;
     min-height: 30px;
