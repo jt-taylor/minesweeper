@@ -134,6 +134,23 @@ function toggleCellClick(y, x) {
         toggleCellClick(y+1, x+1);
     }
 }
+function countValidFlags() {
+    let countValid = 0;
+    let countBad = 0
+    for (y =0 ; y< components.num_rows; y++) {
+        for(x =0 ; x < components.num_col; x++) {
+            if (board[y][x] == 3)
+                countBad += 1;
+            if (board[y][x] ==  4)
+                countValid += 1;
+        }
+    }
+    if (countBad == 0 && countValid == components.num_bombs)
+     {
+        alert("You win");
+        gameOver();
+     }
+}
 function cellListener(td, y, x) {
     td.addEventListener("mousedown", function(event) {
         if (event.which == 1 && event.shiftKey) {
@@ -147,6 +164,7 @@ function cellListener(td, y, x) {
             else if (board[y][x] == 4)
                 board[y][x] = 1;
             updateBoard();
+            countValidFlags();
         }
         else if (event.which == 1) {
             if (components.firstClick == true) {
